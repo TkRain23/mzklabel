@@ -1,39 +1,57 @@
 const express = require("express");
 const router = express.Router();
-
 const Label = require('../../models/label');
 
-// Get all of the labels rgistered with the api
+// get all music labels that have registered
 router.get("/", (req, res) => {
-
-})
+    Label
+        .find()
+        .then(label => res.json(labels))
+        .catch(err => res.json({
+            err: "can not load music labels"
+        }));
+});
 
 router.post("/", (req, res) => {
-
-})
-
-router.get("/:labelName", (req, res) => {
     Label
-        .findOne({ name: req.params.labelName })
+        .create(req.body)
         .then(company => res.json(label))
-        .catch(err => res.json({ err: "can not find the label"}));
+        .catch(err => res.json({
+            err: "can not create music label"
+        }));
+});
+
+router.get("/:name", (req, res) => {
+    Label
+        .findOne({
+            name: req.params.name
+        })
+        .then(company => res.json(label))
+        .catch(err => res.json({
+            err: "can not find the label"
+        }));
 });
 
 router.put("/:name", (req, res) => {
     Label
-        .findOneAndUpdate({ name: req.params.name }, req.body)
+        .findOneAndUpdate({
+            name: req.params.name
+        }, req.body)
         .then(label => res.json(label))
-        .catch(err => res.json({ err: "can not find label you were trying to update" }));
+        .catch(err => res.json({
+            err: "can not find label you were trying to update"
+        }));
 });
-
 
 router.delete("/:name", (req, res) => {
     Label
-        .findOneAndDelete({ name: req.params.name })
+        .findOneAndDelete({
+            name: req.params.name
+        })
         .then(label => res.json(label))
-        .catch(err => res.json({ err: "can not find label you were trying to delete"}));
+        .catch(err => res.json({
+            err: "can not find label you were trying to delete"
+        }));
 });
-
-router.put("/")
 
 module.exports = router;
