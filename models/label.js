@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const labelSchema = new Schema({
     name: { type: String, required: true, unique: true },
+    founder: { type: String },
     verified: { type: Boolean },
     description: { type: String, default: '' },
     artists: [{ type: String, default: [] }],
