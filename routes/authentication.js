@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
             });
         })
         .catch(err => res.status(500).json({
-            err: 'failure: user not created'
+            err: err.message//'failure: user not created'
         }));
 });
 

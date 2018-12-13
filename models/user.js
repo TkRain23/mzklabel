@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("brcrypt.js");
+const bcrypt = require("bcryptjs");
 
 const {
     Schema
@@ -16,9 +16,6 @@ const userSchema = new Schema({
         require: true,
         select: false,
     },
-    description: {
-        type: String,
-    },
     createdAt: {
         type: Date,
     },
@@ -26,7 +23,7 @@ const userSchema = new Schema({
         type: Date,
     },
     labelsCreated: [{
-        type: Sechema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Label",
     }],
 });
@@ -35,21 +32,21 @@ userSchema.pre("save", function(next) {
     const user = this;
     const now = new Date();
 
-    if (!user.createdAt {
-            user.createdAt = now;
-        })
+    user.updatedAt = now;
+    if (!user.createdAt) {
+        user.createdAt = now;
+    }
 
-        if (user.isModified("password")) {
-            brcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(user.password, salt, (err, hash) => {
-                    if (err) return next(err);
+    if (user.isModified("password")) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+                if (err) return next(err);
 
-                    user.password = hash;
-                    return next();
-                });
+                user.password = hash;
+                return next();
             });
-        }
-    else {
+        });
+    } else {
         return next();
     }
 });
@@ -59,3 +56,5 @@ userSchema.methods.comparePassword = function(password, done) {
         return done(err, isMatch);
     })
 }
+
+module.exports = mongoose.model('User', userSchema)

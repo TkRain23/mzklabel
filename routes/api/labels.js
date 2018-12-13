@@ -6,7 +6,7 @@ const Label = require('../../models/label');
 router.get("/", (req, res) => {
     Label
         .find()
-        .then(label => res.json(labels))
+        .then(label => res.json(label))
         .catch(err => res.json({
             err: "can not load music labels"
         }));
@@ -15,8 +15,9 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
     Label
         .create(req.body)
-        .then(company => res.json(label))
+        .then(label => res.json(label))
         .catch(err => res.json({
+            error:err.message,
             err: "can not create music label"
         }));
 });
@@ -26,7 +27,7 @@ router.get("/:name", (req, res) => {
         .findOne({
             name: req.params.name
         })
-        .then(company => res.json(label))
+        .then(label => res.json(label))
         .catch(err => res.json({
             err: "can not find the label"
         }));

@@ -1,6 +1,7 @@
 // import npm modules and std lib dependicies
 var express = require('express');
 var path = require('path');
+var createError = require('http-errors');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
@@ -10,7 +11,7 @@ require('dotenv').config();
 // import custom routes from routes folders
 var authRouter = require("./routes/authentication")
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var apiRouter = require('./routes/api');
 
 // to instantiate the express app
 var app = express();
@@ -30,11 +31,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(authenticate);
+app.use(authentication);
 
 // Register custom routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/authentication', authRouter);
+app.use('/api', apiRouter);
 
 app.use((req, res, next) => {
     next(createError(404));
