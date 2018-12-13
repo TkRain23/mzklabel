@@ -16,6 +16,10 @@ var apiRouter = require('./routes/api');
 // to instantiate the express app
 var app = express();
 
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
+
 // import authentication middleware
 const authentication = require("./lib/authenticate");
 
@@ -41,6 +45,10 @@ app.use('/api', apiRouter);
 app.use((req, res, next) => {
     next(createError(404));
 });
+
+app.get('/', function (req, res) {
+    res.render('index', { title: 'mzklabel'});
+})
 
 // error handler
 app.use((err, req, res) => {
